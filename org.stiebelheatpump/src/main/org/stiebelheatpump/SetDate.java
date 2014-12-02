@@ -76,9 +76,9 @@ public class SetDate {
 					serialPortName, baudRate, configFile);
 			Map<String, String> data = new HashMap<String, String>();
 
-			//String version = communicationService.getversion();
-			//logger.info("Heat pump has version {}", version);
-			
+			// String version = communicationService.getversion();
+			// logger.info("Heat pump has version {}", version);
+
 			data = communicationService.setTime();
 			for (Map.Entry<String, String> entry : data.entrySet()) {
 				logger.info("Data {} has value {}", entry.getKey(),

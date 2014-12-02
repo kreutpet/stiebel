@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ByteStreamPipe class that runs the read thread to read bytes 
- * from the heat pump connector
+ * ByteStreamPipe class that runs the read thread to read bytes from the heat
+ * pump connector
  * 
  * @author Peter Kreutzer
  */
