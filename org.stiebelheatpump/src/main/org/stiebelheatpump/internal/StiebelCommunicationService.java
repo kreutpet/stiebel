@@ -30,7 +30,8 @@ public class StiebelCommunicationService {
 
 	private static ProtocolConnector connector;
 	private String serialPortName;
-	private static final int MAXRETRIES = 1000;
+	private int baudRate;
+	private static final int MAXRETRIES = 100;
 	private final int INPUT_BUFFER_LENGTH = 1024;
 	private byte buffer[] = new byte[INPUT_BUFFER_LENGTH];
 
@@ -53,6 +54,7 @@ public class StiebelCommunicationService {
 	public StiebelCommunicationService(String serialPortName, int baudRate,
 			String configurationFile) throws StiebelHeatPumpException {
 		this.serialPortName = serialPortName;
+		this.baudRate = baudRate;
 
 		if (!getHeatPumpConfiguration(configurationFile)) {
 			throw new StiebelHeatPumpException(
@@ -65,9 +67,7 @@ public class StiebelCommunicationService {
 	}
 
 	public void finalizer() {
-		logger.info("Disconnecting heat pump.");
 		connector.disconnect();
-		logger.info("Heat pump disconnected.");
 	}
 
 	/**
@@ -542,6 +542,7 @@ public class StiebelCommunicationService {
 		int requestRetry = 0;
 		int retry = 0;
 		try {
+			logger.debug("Establish request..");
 			while (requestRetry < MAXRETRIES) {
 				connector.write(request);
 				retry = 0;
@@ -560,10 +561,12 @@ public class StiebelCommunicationService {
 						continue;
 					}
 					dataAvailable = true;
+					logger.debug("Established.");
 					return true;
 				}
 				logger.debug("retry request!");
-
+				//connector.reconnect();
+				startCommunication();
 			}
 			if (!dataAvailable) {
 				logger.warn("heat pump has no data available for request!");

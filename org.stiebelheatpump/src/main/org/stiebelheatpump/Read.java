@@ -72,36 +72,32 @@ public class Read {
 			}
 
 		try {
-			int x = 0;
-			while (x < 20) {
 
-				StiebelCommunicationService communicationService = new StiebelCommunicationService(
-						serialPortName, baudRate, configFile);
-				Map<String, String> data = new HashMap<String, String>();
+			StiebelCommunicationService communicationService = new StiebelCommunicationService(
+					serialPortName, baudRate, configFile);
+			Map<String, String> data = new HashMap<String, String>();
 
-				String version = communicationService.getversion();
-				logger.info("Heat pump has version {}", version);
+			String version = communicationService.getversion();
+			logger.info("Heat pump has version {}", version);
 
-				data = communicationService.getSettings();
-				for (Map.Entry<String, String> entry : data.entrySet()) {
-					logger.info("Data {} has value {}", entry.getKey(),
-							entry.getValue());
-				}
+			 data = communicationService.getSettings();
+			 for (Map.Entry<String, String> entry : data.entrySet()) {
+			 logger.info("Data {} has value {}", entry.getKey(),
+			 entry.getValue());
+			 }
 
-				data = communicationService.getStatus();
-				for (Map.Entry<String, String> entry : data.entrySet()) {
-					logger.info("Data {} has value {}", entry.getKey(),
-							entry.getValue());
-				}
-
-				data = communicationService.getSensors();
-				for (Map.Entry<String, String> entry : data.entrySet()) {
-					logger.info("Data {} has value {}", entry.getKey(),
-							entry.getValue());
-				}
-				communicationService.finalizer();
-				x++;
+			data = communicationService.getStatus();
+			for (Map.Entry<String, String> entry : data.entrySet()) {
+				logger.info("Data {} has value {}", entry.getKey(),
+						entry.getValue());
 			}
+
+			data = communicationService.getSensors();
+			for (Map.Entry<String, String> entry : data.entrySet()) {
+				logger.info("Data {} has value {}", entry.getKey(),
+						entry.getValue());
+			}
+			communicationService.finalizer();
 
 		} catch (StiebelHeatPumpException e) {
 			logger.error("Error : {}", e.toString());

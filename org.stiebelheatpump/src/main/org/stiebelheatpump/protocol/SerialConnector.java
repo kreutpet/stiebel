@@ -37,6 +37,8 @@ public class SerialConnector implements ProtocolConnector {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SerialConnector.class);
 
+	String device ;
+	int baudrate;
 	InputStream in = null;
 	DataOutputStream out = null;
 	SerialPort serialPort = null;
@@ -47,6 +49,9 @@ public class SerialConnector implements ProtocolConnector {
 	@Override
 	public void connect(String device, int baudrate) {
 		try {
+			this.device = device;
+			this.baudrate = baudrate;
+			
 			CommPortIdentifier portIdentifier = CommPortIdentifier
 					.getPortIdentifier(device);
 
@@ -91,11 +96,22 @@ public class SerialConnector implements ProtocolConnector {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			}
+			
+			logger.info("Heat pump disconnected.");
+
 		} catch (IOException e) {
 			logger.warn("Could not fully shut down heat pump driver", e);
 		}
+	}
 
-		logger.debug("Ready");
+	@Override
+	public void reconnect() {
+		logger.debug("Reconnecting serial connection");
+	
+		this.disconnect();
+		this.connect(this.device, this.baudrate);
+		
+		logger.info("Heat pump disconnected.");
 	}
 
 	@Override

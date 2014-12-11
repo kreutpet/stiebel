@@ -21,6 +21,8 @@ public interface ProtocolConnector {
 
 	public abstract void disconnect();
 
+	public abstract void reconnect();
+
 	public abstract byte get() throws Exception;
 
 	public abstract short getShort() throws Exception;
